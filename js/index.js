@@ -104,3 +104,42 @@ window.addEventListener("scroll", function () {
   
 
 
+  const donateElementFeni = document.getElementById('donate-btn-feni');
+  donateElementFeni.addEventListener('click', function(){
+      const mainBalanceElement = getTextFieldValueById('main-balance');
+      const cardTotalDonate = getTextFieldValueById('card-donate-balance-feni');
+      const donateInputField = getInputFieldValueById('donate-feni');
+  
+      console.log(mainBalanceElement, cardTotalDonate , donateInputField)
+      // validation
+      if(isNaN(donateInputField) || donateInputField <= 0 )
+          {
+              document.getElementById('donate-error-feni').classList.remove('hidden')
+              // document.getElementById('donate').value = ''
+              return ;
+          }
+          else{
+              document.getElementById('donate-error-feni').classList.add('hidden')
+          }
+      
+      // calculation 
+      const cardNewTotal = cardTotalDonate + donateInputField;
+      const newMainBalance = mainBalanceElement - donateInputField;
+  
+      //validation check  
+      if(donateInputField > mainBalanceElement)
+      {
+          alert('Main Balance Less Then Donate amount. ')
+          return;
+      }
+  
+      document.getElementById('main-balance').innerText = newMainBalance.toFixed(2);
+      document.getElementById('card-donate-balance-feni').innerText = cardNewTotal.toFixed(2);
+      document.getElementById('donate-feni').value = '';
+  
+      historyGenerator('heading-feni', donateInputField)
+  
+      // popup model open
+      modelOpen()
+  
+  })
