@@ -1,123 +1,106 @@
-const calculateButton = document.getElementById('calculate');
-calculateButton.addEventListener('click', function(){
-    const income = parseFloat(document.getElementById('income').value);
-    const software = parseFloat(document.getElementById('software').value);
-    const courses = parseFloat(document.getElementById('courses').value);
-    const internet = parseFloat(document.getElementById('internet').value);
 
-    if(income <= 0 || isNaN(income))
+const donateElement = document.getElementById('donate-btn');
+donateElement.addEventListener('click', function(){
+    const mainBalanceElement = getTextFieldValueById('main-balance');
+    const cardTotalDonate = getTextFieldValueById('card-donate-balance');
+    const donateInputField = getInputFieldValueById('donate');
+
+    console.log(mainBalanceElement, cardTotalDonate , donateInputField)
+    // validation
+    if(isNaN(donateInputField) || donateInputField <= 0 )
+        {
+            document.getElementById('donate-error').classList.remove('hidden')
+            // document.getElementById('donate').value = ''
+            return ;
+        }
+        else{
+            document.getElementById('donate-error').classList.add('hidden')
+        }
+    
+    // calculation 
+    const cardNewTotal = cardTotalDonate + donateInputField;
+    const newMainBalance = mainBalanceElement - donateInputField;
+
+    //validation check  
+    if(donateInputField > mainBalanceElement)
     {
-        document.getElementById('income-error').classList.remove('hidden')
-        return ;
+        alert('Main Balance Less Then Donate amount. ')
+        return;
     }
 
+    document.getElementById('main-balance').innerText = newMainBalance.toFixed(2);
+    document.getElementById('card-donate-balance').innerText = cardNewTotal.toFixed(2);
+    document.getElementById('donate').value = '';
 
-    const totalExpenses = software + courses + internet;
-    const balance = income - totalExpenses;
-    if (totalExpenses > income) {
-        document.getElementById('logic-error').classList.remove('hidden');
-        return ;
-    }
-    
-    const totalExpensesElement = document.getElementById('total-expenses').innerText = totalExpenses.toFixed(2);
+    historyGenerator('heading', donateInputField)
 
-    const balanceElement = document.getElementById('balance').innerText = balance.toFixed(2);
-
-    const result = document.getElementById('results');
-    result.classList.remove('hidden');
+    // popup model open
+    modelOpen()
 
 })
+// popup model close
+const closeModelBtn = document.getElementById("close-model");
+closeModelBtn.addEventListener("click", function () {
+  model.classList.add("hidden");
+});
 
 
-const calculateSavingsButton = document.getElementById('calculate-savings');
-calculateSavingsButton.addEventListener('click', function(){
-
-    const income = parseFloat(document.getElementById('income').value);
-    const software = parseFloat(document.getElementById('software').value);
-    const courses = parseFloat(document.getElementById('courses').value);
-    const internet = parseFloat(document.getElementById('internet').value);
-
-    const savingsPercentage = parseFloat(document.getElementById('savings').value);
-
-    const totalExpenses = software + courses + internet;
-    const balance = income - totalExpenses;
-
-    const savingAmount = (savingsPercentage * balance) / 100;
-    const remainingBalance = balance - savingAmount ;
-    const savingElement = document.getElementById('savings-amount').innerText = savingAmount.toFixed(2);
-
-    
-    const remainingElement = document.getElementById('remaining-balance').innerText = remainingBalance.toFixed(2);
-
-    const historyItem = document.createElement('div')
-    historyItem.className = 'bg-white p-3 rounded-md border-l-2 border-indigo-500'
-    historyItem.innerHTML = `
-        <p class="text-xs text-gray-500 ">${new Date().toLocaleDateString()} </p>
-        <p class="text-xs font-bold ">Income: ${income.toFixed(2)}</p>
-        <p class="text-xs text-gray-500 ">Expenses: ${totalExpenses.toFixed(2)}</p>
-        <p class="text-xs text-gray-500 ">Balance: ${balance.toFixed(2)}</p>
-    `
-    const historyContainer = document.getElementById('history-list');
-    historyContainer.insertBefore(historyItem, historyContainer.firstChild)
-})
 
 
-// history tab functionality
-const historyTab = document.getElementById('history-tab');
-const assistantTab = document.getElementById('assistant-tab');
+/**
+ * * history button functionality 
+ * * button switching
+ */ 
 
-historyTab.addEventListener('click', function(){
+const historyElement = document.getElementById('history-button');
+const donationElement = document.getElementById('donation-button');
+historyElement.addEventListener('click', function(){
 
-    // button style style change
-    historyTab.classList.add(
-        'text-white',
-        'bg-gradient-to-r',
-        'from-blue-500',
-        'to-purple-600')
+    historyElement.classList.add('bg-btn_color', 'border-none', 'text-black')
+    historyElement.classList.remove('text-gray-600')
 
-   
-    assistantTab.classList.remove( 'text-white',
-        'bg-gradient-to-r',
-        'from-blue-500',
-        'to-purple-600')
-    assistantTab.classList.add('text-gray-600')
+    donationElement.classList.add('border', 'text-gray-600')
+    donationElement.classList.remove('bg-btn_color', )
 
-    document.getElementById('expense-form').classList.add('hidden')
-    document.getElementById('results').classList.remove('hidden')
+    // switching donation page to history page
+    document.getElementById('card-section').classList.add('hidden')
     document.getElementById('history-section').classList.remove('hidden')
-
     
-
-    
-})
-
-assistantTab.addEventListener('click', function(){
-    assistantTab.classList.add(
-        'text-white',
-        'bg-gradient-to-r',
-        'from-blue-500',
-        'to-purple-600')
-
-   
-        historyTab.classList.remove( 'text-white',
-        'bg-gradient-to-r',
-        'from-blue-500',
-        'to-purple-600')
-        historyTab.classList.add('text-gray-600')
-
-        document.getElementById('expense-form').classList.remove('hidden')
-        // document.getElementById('results').classList.remove('hidden')
-        document.getElementById('history-section').classList.add('hidden')
 
 })
 
-// live validation for input
-document.getElementById('income').addEventListener('input', function(){
-    const inputValue = parseFloat(document.getElementById('income').value);
-    
-    if(isNaN(inputValue) || inputValue <= 0)
+donationElement.addEventListener('click', function(){
+    donationElement.classList.add('bg-btn_color' )
+    donationElement.classList.remove('border', 'text-gray-600')
+
+    historyElement.classList.add('text-gray-600')
+    historyElement.classList.remove('bg-btn_color', 'border-none', 'text-black')
+
+    // switching history page to donation page
+    document.getElementById('card-section').classList.remove('hidden')
+    document.getElementById('history-section').classList.add('hidden')
+})
+
+
+window.addEventListener("scroll", function () {
+
+    var previousScrollY = window.scrollY;
+    if(previousScrollY > 0)
     {
-        document.getElementById('income-error').classList.remove('hidden')
-        return ;
+          const header = document.getElementById('header');
+          header.classList.add('backdrop-blur-md', 'bg-white/30')
+          const navbar = document.getElementById('navbar');
+          navbar.classList.remove('bg-nab_color')
+          document.getElementById('nav-btn').classList.add('border-none')
     }
-})
+    else if (previousScrollY === 0)
+    {
+      const navbar = document.getElementById('navbar');
+      navbar.classList.add('bg-nab_color')
+      document.getElementById('nav-btn').classList.remove('border-none')
+    }
+  
+  });
+  
+
+
