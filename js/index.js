@@ -53,9 +53,11 @@ closeModelBtn.addEventListener("click", function () {
  */ 
 
 const historyElement = document.getElementById('history-button');
+
 const donationElement = document.getElementById('donation-button');
 historyElement.addEventListener('click', function(){
 
+    
     historyElement.classList.add('bg-btn_color', 'border-none', 'text-black')
     historyElement.classList.remove('text-gray-600')
 
@@ -65,7 +67,7 @@ historyElement.addEventListener('click', function(){
     // switching donation page to history page
     document.getElementById('card-section').classList.add('hidden')
     document.getElementById('history-section').classList.remove('hidden')
-    
+    document.getElementById('footer').classList.add('hidden')
 
 })
 
@@ -79,6 +81,7 @@ donationElement.addEventListener('click', function(){
     // switching history page to donation page
     document.getElementById('card-section').classList.remove('hidden')
     document.getElementById('history-section').classList.add('hidden')
+    document.getElementById('footer').classList.remove('hidden')
 })
 
 
@@ -184,3 +187,12 @@ window.addEventListener("scroll", function () {
       modelOpen()
   
   })
+
+//   Home To Blog
+document.getElementById('blog-btn').addEventListener('click', function(){
+    window.location.href = 'blog.html'
+})
+
+
+
+const myElement = document.querySelectorAll('CSS Selector')
