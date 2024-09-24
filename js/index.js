@@ -195,5 +195,3 @@ document.getElementById('blog-btn').addEventListener('click', function(){
 
 
 
-const myElement = document.getElementById('id name')
-myElement.style.color = 'red'
